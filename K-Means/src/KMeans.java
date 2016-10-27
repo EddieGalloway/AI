@@ -85,9 +85,12 @@ public class KMeans {
 		
 		for(int i = 0; i < K; i++){
 			if(centroidPoints[i].equals(oldCentroidPoints[i])){
-				
+				matchCount ++;
 			}
 		}
+		
+		if(matchCount == K)
+			isSame = true;
 		
 		return isSame;
 	}
@@ -96,18 +99,19 @@ public class KMeans {
 		KMeans k = new KMeans(3,"xyz.txt");
 		int count = 0;
 		do{
+			k.oldCentroidPoints = k.centroidPoints;
 			k.assignCentroids();
 			k.relocateCentroids();
 			
-//			if(k.oldCentroidPoints.equals(k.centroidPoints)){
-//				System.out.println("Clusters stabilized in " + count + " iterations.");
-//			}
+			if(k.oldCentroidPoints.equals(k.centroidPoints)){
+				System.out.println("Clusters stabilized in " + count + " iterations.");
+			}
 			count ++; 
 //			k.oldCentroidPoints = k.centroidPoints;
-			for(ArrayList<Pair> a : k.centroidPoints){
-				a.clear();
-			}
+//			for(ArrayList<Pair> a : k.centroidPoints){
+//				a.clear();
+//			}
 		}
-		while(k.oldCentroidPoints != k.centroidPoints);
+		while(!k.compare());
 	}
 }
